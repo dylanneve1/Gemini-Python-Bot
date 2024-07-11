@@ -1,4 +1,6 @@
 import google.generativeai as genai
+from gtts import gTTS
+import os
 
 # Authentication (using your provided API key)
 genai.configure(api_key='AIzaSyCL26YNMVu0u-z46hU7d1Hkw4FqNJkaCC4')
@@ -23,6 +25,7 @@ def main():
 
     # Handle and display response
     print("Gemini:", response)
+    speak(response) # Speak the response
 
     # Update chat history (optional)
     chat_history.append({"role": "user", "content": user_input})
@@ -45,6 +48,14 @@ def send_message_to_gemini(message, model, history=[]):
 
   # Return the response text
   return response.text 
+
+def speak(text):
+  """Speaks the given text using gTTS."""
+  tts = gTTS(text=text, lang='en') # Use English 
+  tts.save("response.mp3")        # Save to an MP3 file
+  os.system("afplay response.mp3") # Play the MP3 file (macOS)
+  # For Windows, use: os.system("start response.mp3")
+  # For Linux, you might need to install a player like mpg123: os.system("mpg123 response.mp3")
 
 if __name__ == "__main__":
   main()
